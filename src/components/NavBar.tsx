@@ -35,11 +35,11 @@ const NavBar = () => {
     }
 
     function signinClick(e:React.MouseEvent<HTMLButtonElement>) {
-        console.log("signinClick ", e.target);
+        // console.log("signinClick ", e.target);
         setFormOpen(prev => !prev);
     }
     function signupClick(e:React.MouseEvent<HTMLButtonElement>) {
-        console.log("signupClick ", e.target);
+        // console.log("signupClick ", e.target);
         setFormOpen(prev => !prev);
     }
 

@@ -4,21 +4,13 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-    Modal, Button, Cascader, Checkbox, DatePicker,
-    Form, Input, InputNumber, Radio, Select, Slider,
-    Switch, TreeSelect, Upload,
+    Modal, Button, Checkbox,
+    DatePicker, Form, Input,
 } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
-const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 
-const normFile = (e: any) => {
-    if (Array.isArray(e)) {
-        return e;
-    }
-    return e?.fileList;
-};
 
 export default function FormModal(
     props: {
@@ -31,113 +23,92 @@ export default function FormModal(
 
     useEffect(() => {
         setIsModalOpen(props.formOpen);
-    }, [props.formOpen])
+    }, [props.formOpen]);
 
-    const showModal = () => {
-        setIsModalOpen(true);
-        props.setFormOpen(true);
+
+    const onFinish = (values: any) => {
+        closeModal();
+        console.log('Success:', values);
     };
 
-    const handleOk = () => {
-        setIsModalOpen(false);
-        props.setFormOpen(false);
+    const onFinishFailed = (errorInfo: any) => {
+        closeModal();
+        console.log('Failed:', errorInfo);
     };
 
-    const handleCancel = () => {
+
+    const closeModal = () => {
         setIsModalOpen(false);
         props.setFormOpen(false);
     };
 
     return (
         <>
-            {/* <Button type="primary" onClick={showModal}>
-                Open Modal
-            </Button> */}
-            <Modal title="Basic Modal" open={isModalOpen}
-                onOk={handleOk} onCancel={handleCancel}>
+            <Modal title="Signup" open={isModalOpen} onCancel={closeModal}
+                footer={[
+                    <Button key="back" onClick={closeModal}>
+                        Return
+                    </Button>
+                ]}>
 
                 <>
-                    {/* <Checkbox
-                        checked={componentDisabled}
-                        onChange={(e) => setComponentDisabled(e.target.checked)}
-                    >
-                        Form disabled
-                    </Checkbox> */}
                     <Form
-                        labelCol={{ span: 4 }}
-                        wrapperCol={{ span: 14 }}
-                        layout="horizontal"
-                        // disabled={componentDisabled}
+                        name="basic"
+                        labelCol={{ span: 8 }}
+                        wrapperCol={{ span: 16 }}
                         style={{ maxWidth: 600 }}
-                    >
-                        <Form.Item label="Checkbox" name="disabled" valuePropName="checked">
-                            <Checkbox>Checkbox</Checkbox>
-                        </Form.Item>
-                        <Form.Item label="Radio">
-                            <Radio.Group>
-                                <Radio value="apple"> Apple </Radio>
-                                <Radio value="pear"> Pear </Radio>
-                            </Radio.Group>
-                        </Form.Item>
-                        <Form.Item label="Input">
+                        initialValues={{ remember: true }}
+                        onFinish={onFinish}
+                        onFinishFailed={onFinishFailed}
+                        autoComplete="off">
+                        <Form.Item
+                            label="Full Name"
+                            name="name"
+                            rules={[{
+                                required: true,
+                                message: 'Please enter your full name'
+                            }]}>
                             <Input />
                         </Form.Item>
-                        <Form.Item label="Select">
-                            <Select>
-                                <Select.Option value="demo">Demo</Select.Option>
-                            </Select>
+
+                        <Form.Item
+                            label="Password"
+                            name="password"
+                            rules={[{
+                                required: true,
+                                message: 'Please enter your password!'
+                            }]}>
+                            <Input.Password />
                         </Form.Item>
-                        <Form.Item label="TreeSelect">
-                            <TreeSelect
-                                treeData={[
-                                    { title: 'Light', value: 'light', children: [{ title: 'Bamboo', value: 'bamboo' }] },
-                                ]}
-                            />
+
+                        <Form.Item
+                            label="Email"
+                            name="email"
+                            rules={[{
+                                required: true,
+                                message: 'Please enter a valid email'
+                            }]}>
+                            <Input />
                         </Form.Item>
-                        <Form.Item label="Cascader">
-                            <Cascader
-                                options={[
-                                    {
-                                        value: 'zhejiang',
-                                        label: 'Zhejiang',
-                                        children: [
-                                            {
-                                                value: 'hangzhou',
-                                                label: 'Hangzhou',
-                                            },
-                                        ],
-                                    },
-                                ]}
-                            />
-                        </Form.Item>
-                        <Form.Item label="DatePicker">
+
+                        <Form.Item label="Date of Birth">
                             <DatePicker />
                         </Form.Item>
-                        <Form.Item label="RangePicker">
-                            <RangePicker />
+
+                        <Form.Item
+                            label="Phone Number" name="phone">
+                            <Input />
                         </Form.Item>
-                        <Form.Item label="InputNumber">
-                            <InputNumber />
+
+                        <Form.Item name="remember" valuePropName="checked" 
+                                    wrapperCol={{ offset: 8, span: 16 }}>
+                            <Checkbox>Remember me</Checkbox>
                         </Form.Item>
-                        <Form.Item label="TextArea">
-                            <TextArea rows={4} />
-                        </Form.Item>
-                        <Form.Item label="Switch" valuePropName="checked">
-                            <Switch />
-                        </Form.Item>
-                        <Form.Item label="Upload" valuePropName="fileList" getValueFromEvent={normFile}>
-                            <Upload action="/upload.do" listType="picture-card">
-                                <div>
-                                    <PlusOutlined />
-                                    <div style={{ marginTop: 8 }}>Upload</div>
-                                </div>
-                            </Upload>
-                        </Form.Item>
-                        <Form.Item label="Button">
-                            <Button>Button</Button>
-                        </Form.Item>
-                        <Form.Item label="Slider">
-                            <Slider />
+
+                        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                            <Button type="primary" htmlType="submit">
+                                Submit
+                            </Button>
                         </Form.Item>
                     </Form>
                 </>
