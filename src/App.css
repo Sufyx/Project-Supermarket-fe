@@ -5,3 +5,34 @@
 }
 
 
+.mainContent {
+  display: flex;
+  justify-content: space-between;
+  margin: 3% 0;
+}
+
+.cartContainer {
+  margin: 0 1%;
+  height: 80vh;
+  width: 30%;
+  border: 3px solid rgb(65, 14, 94)
+}
+
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto;
+  gap: 10px;
+  width: 50%;
+  margin: 0 1%;
+  width: fit-content;
+  justify-items: center;
+  align-items: center;
+}
+
+.filterContainer {
+  height: 15vh;
+  width: 90%;
+  margin: 1% auto;
+  border: 3px solid rgb(11, 87, 39);
+}
