@@ -8,6 +8,7 @@ import {
     DatePicker, Form, Input,
 } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import axios from 'axios';
 
 const { TextArea } = Input;
 
@@ -18,6 +19,8 @@ export default function FormModal(
         setFormOpen: React.Dispatch<React.SetStateAction<boolean>>
     }) {
 
+    const baseUrl = process.env.REACT_APP_SERVER_URL;
+
     // const [componentDisabled, setComponentDisabled] = useState<boolean>(true);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -26,9 +29,11 @@ export default function FormModal(
     }, [props.formOpen]);
 
 
-    const onFinish = (values: any) => {
+    async function onFinish (values: any) {
         closeModal();
-        console.log('Success:', values);
+        console.log('Submitting:', values);
+        const res = await axios.post(`${baseUrl}/users/signup`, values);
+        console.log('res.data: ', res.data);
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -76,7 +81,16 @@ export default function FormModal(
                             name="password"
                             rules={[{
                                 required: true,
-                                message: 'Please enter your password!'
+                                message: 'Please enter a password'
+                            }]}>
+                            <Input.Password />
+                        </Form.Item>
+                        <Form.Item
+                            label="PasswordConfirm"
+                            name="passwordConfirm"
+                            rules={[{
+                                required: true,
+                                message: 'Please confirm your password'
                             }]}>
                             <Input.Password />
                         </Form.Item>
@@ -91,7 +105,7 @@ export default function FormModal(
                             <Input />
                         </Form.Item>
 
-                        <Form.Item label="Date of Birth">
+                        <Form.Item name="birthDate" label="Date of Birth">
                             <DatePicker />
                         </Form.Item>
 
@@ -100,10 +114,10 @@ export default function FormModal(
                             <Input />
                         </Form.Item>
 
-                        <Form.Item name="remember" valuePropName="checked" 
+                        {/* <Form.Item name="remember" valuePropName="checked" 
                                     wrapperCol={{ offset: 8, span: 16 }}>
                             <Checkbox>Remember me</Checkbox>
-                        </Form.Item>
+                        </Form.Item> */}
 
                         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                             <Button type="primary" htmlType="submit">
