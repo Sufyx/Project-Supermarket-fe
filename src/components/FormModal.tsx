@@ -8,12 +8,15 @@ import {
     DatePicker, Form, Input,
 } from 'antd';
 import axios from 'axios';
+import { useUserContext } from '../contexts/UserContext';
 
 
 
 export default function FormModal() {
 
     const baseUrl = process.env.REACT_APP_SERVER_URL;
+
+    const { loggedUser, setLoggedUser } = useUserContext();
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [isSignUp, setIsSignUp] = useState<boolean>(false);
@@ -27,13 +30,24 @@ export default function FormModal() {
     async function onFinish(values: any) {
         closeModal();
         console.log('Submitting: ', values);
-        if (isSignUp) {
-            // Validate form data
-            // const res = await axios.post(`${baseUrl}/users/signup`, values);
-        } else {
-            // const res = await axios.post(`${baseUrl}/users/signin`, values);
+        let res;
+        try {
+            if (isSignUp) {
+                // Validate form data
+                res = await axios.post(`${baseUrl}/users/signup`, values);
+            } else {
+                res = await axios.post(`${baseUrl}/users/signin`, values);
+            }
+            if (res.data) {
+                console.log('res.data: ', res.data);
+                setLoggedUser(res.data);
+                console.log('loggedUser: ', loggedUser);
+            }
+        } catch (error) {
+            if (error instanceof Error)
+                console.log("Error at onFinish: ", error.message);
+            console.error(error);
         }
-        // console.log('res.data: ', res.data);
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -47,12 +61,12 @@ export default function FormModal() {
     };
 
 
-    function signInClick(e:React.MouseEvent<HTMLButtonElement>) {
+    function signInClick(e: React.MouseEvent<HTMLButtonElement>) {
         // console.log("signInClick ", e.target);
         setIsSignUp(false);
         setIsModalOpen(prev => !prev);
     }
-    function signUpClick(e:React.MouseEvent<HTMLButtonElement>) {
+    function signUpClick(e: React.MouseEvent<HTMLButtonElement>) {
         // console.log("signUpClick ", e.target);
         setIsSignUp(true);
         setIsModalOpen(prev => !prev);
