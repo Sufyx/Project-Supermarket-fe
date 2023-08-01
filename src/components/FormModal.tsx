@@ -38,9 +38,9 @@ export default function FormModal() {
             } else {
                 res = await axios.post(`${baseUrl}/users/signIn`, values);
             }
-            if (res.data) {
+            if (res.data.user._doc) {
                 console.log('res.data: ', res.data);
-                setLoggedUser(res.data);
+                setLoggedUser(res.data.user._doc);
                 console.log('loggedUser: ', loggedUser);
             }
         } catch (error) {
@@ -70,6 +70,10 @@ export default function FormModal() {
         // console.log("signUpClick ", e.target);
         setIsSignUp(true);
         setIsModalOpen(prev => !prev);
+    }
+    function signOutClick(e: React.MouseEvent<HTMLButtonElement>) {
+        // console.log("signUpClick ", e.target);
+        setLoggedUser(null);
     }
 
 
@@ -102,19 +106,31 @@ export default function FormModal() {
             </Form.Item>
         </>
 
+    const loginButtons =
+        <Menu.Item key="6" style={{ marginRight: "5%" }}>
+            <Button type="primary"
+                onClick={signInClick}
+                style={{ marginRight: "10px" }}>
+                Sign in
+            </Button>
+            <Button onClick={signUpClick} >
+                Sign up
+            </Button>
+        </Menu.Item>
+
+    const logoutButton =
+        <Menu.Item key="6" style={{ marginRight: "5%" }}>
+            <Button type="primary"
+                onClick={signOutClick}
+                style={{ marginRight: "10px" }}>
+                Sign out
+            </Button>
+        </Menu.Item>
+
 
     return (
         <>
-            <Menu.Item key="6" style={{ marginRight: "5%" }}>
-                <Button type="primary"
-                    onClick={signInClick}
-                    style={{ marginRight: "10px" }}>
-                    Sign in
-                </Button>
-                <Button onClick={signUpClick} >
-                    Sign up
-                </Button>
-            </Menu.Item>
+            {loggedUser ? logoutButton : loginButtons}
 
             <Modal title="Signup" open={isModalOpen} onCancel={closeModal}
                 footer={[

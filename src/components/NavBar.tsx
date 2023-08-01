@@ -2,7 +2,7 @@
  * 
  */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Layout, Menu, Button, Drawer, Row, Col, Input
 } from "antd";
@@ -13,18 +13,27 @@ import {
     MenuOutlined,
 } from "@ant-design/icons";
 import FormModal from "./FormModal";
+import { useUserContext } from '../contexts/UserContext';
 
 const { Header } = Layout;
 
-const NavBar = () => {
 
+export default function NavBar() {
+
+    const { loggedUser} = useUserContext();
     const { Search } = Input;
     // const [drawerVisible, setDrawerVisible] = useState<boolean>(false);
-
+    const [userName, setUserName] = useState<string>("");
     
     function onSearch(value: string) {
         console.log(value);
     }
+
+    useEffect(() => {
+        if (loggedUser)
+            setUserName(loggedUser.name);
+    }, [loggedUser])
+    
 
     // const showDrawer = () => {
     //     setDrawerVisible(true);
@@ -70,6 +79,7 @@ const NavBar = () => {
 
                                 <Menu.Item key="5"
                                     style={{ flexGrow: 1, pointerEvents: "none" }} >
+                                        {loggedUser ? ("Hi, " + userName) : 'Please sign in / sign up'}
                                 </Menu.Item>
 
                                 <FormModal />
@@ -121,4 +131,4 @@ const NavBar = () => {
     );
 };
 
-export default NavBar;
+// export default NavBar;
