@@ -7,9 +7,9 @@ import ProductCard from './ProductCard';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import uuid from 'react-uuid';
-import {
-    Col, Divider, Row
-} from 'antd';
+// import {
+//     Col, Divider, Row
+// } from 'antd';
 
 
 export default function ProductGrid() {

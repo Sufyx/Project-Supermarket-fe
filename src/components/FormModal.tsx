@@ -34,9 +34,9 @@ export default function FormModal() {
         try {
             if (isSignUp) {
                 // Validate form data
-                res = await axios.post(`${baseUrl}/users/signup`, values);
+                res = await axios.post(`${baseUrl}/users/signUp`, values);
             } else {
-                res = await axios.post(`${baseUrl}/users/signin`, values);
+                res = await axios.post(`${baseUrl}/users/signIn`, values);
             }
             if (res.data) {
                 console.log('res.data: ', res.data);
@@ -161,7 +161,6 @@ export default function FormModal() {
                                 Submit
                             </Button>
                         </Form.Item>
-
 
                     </Form>
                 </>

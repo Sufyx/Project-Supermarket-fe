@@ -19,19 +19,19 @@ const { Header } = Layout;
 const NavBar = () => {
 
     const { Search } = Input;
-    const [drawerVisible, setDrawerVisible] = useState<boolean>(false);
+    // const [drawerVisible, setDrawerVisible] = useState<boolean>(false);
 
-    const showDrawer = () => {
-        setDrawerVisible(true);
-    };
-    const onClose = () => {
-        setDrawerVisible(false);
-    };
-
-
+    
     function onSearch(value: string) {
         console.log(value);
     }
+
+    // const showDrawer = () => {
+    //     setDrawerVisible(true);
+    // };
+    // const onClose = () => {
+    //     setDrawerVisible(false);
+    // };
 
 
     return (
