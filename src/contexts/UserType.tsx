@@ -13,5 +13,6 @@ export interface User {
     orders: string[];
     favorites: string[];
     creditCards: string[];
+    // token: string;
   }
   

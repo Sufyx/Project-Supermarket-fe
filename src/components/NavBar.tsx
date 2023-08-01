@@ -48,6 +48,7 @@ export default function NavBar() {
             <Layout className="layout">
                 <Header style={{ padding: 0 }}>
                     <Row justify="space-between" align="middle">
+
                         <Col xs={20} sm={20} md={4}>
                             <div className="logo"
                                 style={{ color: "white", paddingLeft: "20px" }}>
@@ -63,21 +64,21 @@ export default function NavBar() {
                                     Home
                                 </Menu.Item>
 
-                                <Menu.Item key="2" icon={<UserOutlined />} >
+                                {/* <Menu.Item key="2" icon={<UserOutlined />} >
                                     Profile
-                                </Menu.Item>
+                                </Menu.Item> */}
 
-                                <Menu.Item key="3" icon={<SettingOutlined />} >
+                                <Menu.Item key="2" icon={<SettingOutlined />} >
                                     Settings
                                 </Menu.Item>
 
-                                <Menu.Item key="4">
+                                <Menu.Item key="3">
                                     <Search style={{ marginTop: "7%" }}
                                         placeholder="input search text"
                                         onSearch={onSearch} enterButton />
                                 </Menu.Item>
 
-                                <Menu.Item key="5"
+                                <Menu.Item key="4"
                                     style={{ flexGrow: 1, pointerEvents: "none" }} >
                                         {loggedUser ? ("Hi, " + userName) : 'Please sign in / sign up'}
                                 </Menu.Item>

@@ -9,8 +9,12 @@ import ShoppingCart from './components/ShoppingCart';
 import ProductsFilter from './components/ProductsFilter';
 
 
+
 function App() {
 
+  // useEffect(() => {
+  //   console.log("- - - Mount test - - -");
+  // }, []);
 
 
   return (

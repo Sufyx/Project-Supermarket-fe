@@ -22,9 +22,26 @@ export default function FormModal() {
     const [isSignUp, setIsSignUp] = useState<boolean>(false);
 
 
-    // useEffect(() => {
-    //     
-    // }, []);
+    useEffect(() => {
+        reLogUser()
+    }, []);
+
+
+    async function reLogUser() {
+        try {
+            const token = localStorage.getItem('loggedUser')
+            if (token) {
+                const res = await axios.get(`${baseUrl}/users/logged`,
+                    { headers: { authorization: `Bearer ${token}` } });
+                console.log("res = ", res.data.user._doc);
+                setLoggedUser(res.data.user._doc);
+            }
+        } catch (error) {
+            if (error instanceof Error)
+                console.log("Error at reLogUser: ", error.message);
+            console.error(error);
+        }
+    }
 
 
     async function onFinish(values: any) {
@@ -41,6 +58,8 @@ export default function FormModal() {
             if (res.data.user._doc) {
                 console.log('res.data: ', res.data);
                 setLoggedUser(res.data.user._doc);
+                // setLoggedUser({...res.data.user._doc, token: res.data.token});
+                localStorage.setItem('loggedUser', res.data.token);
                 console.log('loggedUser: ', loggedUser);
             }
         } catch (error) {
@@ -74,6 +93,7 @@ export default function FormModal() {
     function signOutClick(e: React.MouseEvent<HTMLButtonElement>) {
         // console.log("signUpClick ", e.target);
         setLoggedUser(null);
+        localStorage.clear();
     }
 
 
@@ -107,7 +127,7 @@ export default function FormModal() {
         </>
 
     const loginButtons =
-        <Menu.Item key="6" style={{ marginRight: "5%" }}>
+        <>
             <Button type="primary"
                 onClick={signInClick}
                 style={{ marginRight: "10px" }}>
@@ -116,21 +136,22 @@ export default function FormModal() {
             <Button onClick={signUpClick} >
                 Sign up
             </Button>
-        </Menu.Item>
+        </>
 
     const logoutButton =
-        <Menu.Item key="6" style={{ marginRight: "5%" }}>
-            <Button type="primary"
-                onClick={signOutClick}
-                style={{ marginRight: "10px" }}>
-                Sign out
-            </Button>
-        </Menu.Item>
+        <Button type="primary"
+            onClick={signOutClick}
+            style={{ marginRight: "10px" }}>
+            Sign out
+        </Button>
 
 
     return (
         <>
-            {loggedUser ? logoutButton : loginButtons}
+            <Menu.Item key="5" style={{ marginRight: "5%" }}>
+                {loggedUser ? logoutButton : loginButtons}
+            </Menu.Item>
+
 
             <Modal title="Signup" open={isModalOpen} onCancel={closeModal}
                 footer={[
