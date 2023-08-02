@@ -55,12 +55,11 @@ export default function FormModal() {
             } else {
                 res = await axios.post(`${baseUrl}/users/signIn`, values);
             }
+            console.log('res.data: ', res.data);
             if (res.data.user._doc) {
-                console.log('res.data: ', res.data);
                 setLoggedUser(res.data.user._doc);
                 // setLoggedUser({...res.data.user._doc, token: res.data.token});
                 localStorage.setItem('loggedUser', res.data.token);
-                console.log('loggedUser: ', loggedUser);
             }
         } catch (error) {
             if (error instanceof Error)
@@ -148,10 +147,9 @@ export default function FormModal() {
 
     return (
         <>
-            <Menu.Item key="5" style={{ marginRight: "5%" }}>
+            <Menu.Item key="6" style={{ marginRight: "5%" }}>
                 {loggedUser ? logoutButton : loginButtons}
             </Menu.Item>
-
 
             <Modal title="Signup" open={isModalOpen} onCancel={closeModal}
                 footer={[
