@@ -36,3 +36,8 @@
   margin: 1% auto;
   border: 3px solid rgb(11, 87, 39);
 }
+
+
+@media (max-width: 800px) {
+
+}

@@ -4,12 +4,12 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-    Modal, Button, Checkbox, Menu,
+    Modal, Button, Menu,
     DatePicker, Form, Input,
 } from 'antd';
+import { UserOutlined, LoginOutlined, LogoutOutlined, FormOutlined } from "@ant-design/icons";
 import axios from 'axios';
 import { useUserContext } from '../contexts/UserContext';
-
 
 
 export default function FormModal() {
@@ -24,6 +24,7 @@ export default function FormModal() {
 
     useEffect(() => {
         reLogUser()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
 
@@ -77,20 +78,15 @@ export default function FormModal() {
     const closeModal = () => {
         setIsModalOpen(false);
     };
-
-
-    function signInClick(e: React.MouseEvent<HTMLButtonElement>) {
-        // console.log("signInClick ", e.target);
+    function signInClick() {
         setIsSignUp(false);
         setIsModalOpen(prev => !prev);
     }
-    function signUpClick(e: React.MouseEvent<HTMLButtonElement>) {
-        // console.log("signUpClick ", e.target);
+    function signUpClick() {
         setIsSignUp(true);
         setIsModalOpen(prev => !prev);
     }
-    function signOutClick(e: React.MouseEvent<HTMLButtonElement>) {
-        // console.log("signUpClick ", e.target);
+    function signOutClick() {
         setLoggedUser(null);
         localStorage.clear();
     }
@@ -130,10 +126,10 @@ export default function FormModal() {
             <Button type="primary"
                 onClick={signInClick}
                 style={{ marginRight: "10px" }}>
-                Sign in
+                <LoginOutlined /> Sign in
             </Button>
             <Button onClick={signUpClick} >
-                Sign up
+                <FormOutlined /> Sign Up
             </Button>
         </>
 
@@ -141,17 +137,24 @@ export default function FormModal() {
         <Button type="primary"
             onClick={signOutClick}
             style={{ marginRight: "10px" }}>
-            Sign out
+            <LogoutOutlined /> Sign Out
         </Button>
 
 
     return (
         <>
-            <Menu.Item key="6" style={{ marginRight: "5%" }}>
+            <Menu.Item key="register" className="logButtons"
+                style={{
+                    paddingInline: 5,
+                    position: "absolute",
+                    right: 0
+                }}
+                >
                 {loggedUser ? logoutButton : loginButtons}
             </Menu.Item>
 
-            <Modal title="Signup" open={isModalOpen} onCancel={closeModal}
+            <Modal title={isSignUp ? "SignUp" : "SignIn"}
+                open={isModalOpen} onCancel={closeModal}
                 footer={[
                     <Button key="back" onClick={closeModal}>
                         Return
