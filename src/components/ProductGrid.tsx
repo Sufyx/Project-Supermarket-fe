@@ -37,13 +37,13 @@ export default function ProductGrid() {
     return (
         <div>
             <div className='productGrid'>
-            {productList.map(product => {
-                return <div className="gridItem" key={uuid()}>
-                            <ProductCard product={product} />
-                            {/* <div>{product.name}</div> */}
-                        </div>
-                
-            })}
+                {productList.map(product => {
+                    return <div className="gridItem" key={uuid()}>
+                        <ProductCard product={product} />
+                        {/* <div>{product.name}</div> */}
+                    </div>
+
+                })}
             </div>
         </div>
     )

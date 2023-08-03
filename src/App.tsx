@@ -21,12 +21,12 @@ function App() {
     <UserProvider>
       <div className="App">
         <NavBar />
-
-        <ProductsFilter />
-
         <div className="mainContent">
-          <ShoppingCart />
-          <ProductGrid />
+          <ProductsFilter />
+          <div className="cartAndGrid">
+            <ShoppingCart />
+            <ProductGrid />
+          </div>
         </div>
 
         <Routes >
