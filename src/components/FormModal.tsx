@@ -7,9 +7,12 @@ import {
     Modal, Button, Menu,
     DatePicker, Form, Input,
 } from 'antd';
-import { UserOutlined, LoginOutlined, LogoutOutlined, FormOutlined } from "@ant-design/icons";
+import { 
+    UserOutlined, LoginOutlined, LogoutOutlined, FormOutlined 
+} from "@ant-design/icons";
 import axios from 'axios';
 import { useUserContext } from '../contexts/UserContext';
+import { validateSignUp, validateSignIn } from "../utilities/utils"
 
 
 export default function FormModal() {
@@ -47,19 +50,21 @@ export default function FormModal() {
 
     async function onFinish(values: any) {
         closeModal();
-        console.log('Submitting: ', values);
+        console.log(typeof values , ' Submitting: ', values);
         let res;
         try {
             if (isSignUp) {
-                // Validate form data
+                const valid = validateSignUp(values);
+                console.log(valid);
                 res = await axios.post(`${baseUrl}/users/signUp`, values);
             } else {
+                const valid = validateSignIn(values);
+                console.log(valid);
                 res = await axios.post(`${baseUrl}/users/signIn`, values);
             }
-            console.log('res.data: ', res.data);
+            console.log('onFinish res.data: ', res.data);
             if (res.data.user._doc) {
                 setLoggedUser(res.data.user._doc);
-                // setLoggedUser({...res.data.user._doc, token: res.data.token});
                 localStorage.setItem('loggedUser', res.data.token);
             }
         } catch (error) {
