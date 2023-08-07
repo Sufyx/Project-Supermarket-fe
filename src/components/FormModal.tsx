@@ -13,7 +13,7 @@ import {
 import axios from 'axios';
 import { useUserContext } from '../contexts/UserContext';
 import { User } from '../contexts/UserType';
-// import { validateSignUp, validateSignIn } from "../utilities/utils"
+import { validateSignUp, validateSignIn } from "../utilities/utils"
 
 const { Option } = Select;
 
@@ -37,7 +37,7 @@ const prefixSelector = (
             <Option value="07">+07</Option>
             <Option value="08">+08</Option>
             <Option value="09">+09</Option>
-            {/* <Option value="1800">+1800</Option> */}
+            {/* <Option value="1700">+1700</Option> */}
         </Select>
     </Form.Item>
 );
@@ -79,8 +79,10 @@ export default function FormModal() {
 
     async function onFinish(values: any) {
         closeModal();
-        values.phone = `${values.prefix}-${values.phone}`;
-        delete values.prefix;
+        if (isSignUp) {
+            values.phone = `${values.prefix}-${values.phone}`;
+            delete values.prefix;
+        }
         const userDetails = { ...values } as User;
         console.log(' Submitting: ', userDetails);
         let res;
@@ -237,15 +239,15 @@ export default function FormModal() {
 
             <Modal title={isSignUp ? "SignUp" : "SignIn"}
                 open={isModalOpen} onCancel={closeModal}
-                footer={[
-                    <Button key="back" onClick={closeModal}>
-                        Return
-                    </Button>,
-                    <Button type="primary" htmlType="submit">
-                        Submit
-                    </Button>
-                ]
-                }>
+            footer={[
+                // <Button key="back" onClick={closeModal}>
+                //     Return
+                // </Button>,
+                // <Button type="primary" htmlType="submit" onClick={onFinish}>
+                //     Submit
+                // </Button>
+            ]}
+            >
 
                 <>
                     <Form
@@ -288,15 +290,19 @@ export default function FormModal() {
 
                         {isSignUp ? signUpFields : ''}
 
-<<<<<<< HEAD
-=======
-                        {/* <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                            <Button key="back" onClick={closeModal}>
+                                Return
+                            </Button>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <Button type="primary" htmlType="submit">
                                 Submit
                             </Button>
+                        </Form.Item>
+                        {/* <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                         </Form.Item> */}
 
->>>>>>> 5d0e60347e18b1882013ec0501e770b7a720f585
+
                     </Form>
                 </>
 
