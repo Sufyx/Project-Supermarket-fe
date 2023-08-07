@@ -26,8 +26,8 @@ export function validateSignUp(formData: User): string {
         return "Please select a date of birth";
 
     if (formData.phone && 
-        (formData.phone.length < 5 || formData.phone.length > 20))
-        return "Phone number must be between 5 and 20 digits (optional field)";
+        (formData.phone.length < 6 || formData.phone.length > 20))
+        return "Phone number must be between 6 and 20 digits (optional field)";
 
     return "ok";
 }
