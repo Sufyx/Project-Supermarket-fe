@@ -37,7 +37,7 @@ const prefixSelector = (
             <Option value="07">+07</Option>
             <Option value="08">+08</Option>
             <Option value="09">+09</Option>
-            {/* <Option value="1700">+1700</Option> */}
+            {/* <Option value="1800">+1800</Option> */}
         </Select>
     </Form.Item>
 );
