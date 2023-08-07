@@ -82,7 +82,7 @@ export default function FormModal() {
         closeModal();
         values.phone = `${values.prefix}-${values.phone}`;
         delete values.prefix;
-        const userDetails = {...values} as User;
+        const userDetails = { ...values } as User;
         console.log(' Submitting: ', userDetails);
         let res;
         try {
@@ -206,7 +206,7 @@ export default function FormModal() {
                     {
                         min: 4,
                         message: 'Phone number must be at least 6 digits (including prefix)',
-                    },{
+                    }, {
                         max: 18,
                         message: 'Phone number must be no more than 20 digits (including prefix)',
                     }
@@ -253,8 +253,12 @@ export default function FormModal() {
                 footer={[
                     <Button key="back" onClick={closeModal}>
                         Return
+                    </Button>,
+                    <Button type="primary" htmlType="submit">
+                        Submit
                     </Button>
-                ]}>
+                ]
+                }>
 
                 <>
                     <Form
@@ -299,11 +303,11 @@ export default function FormModal() {
 
                         {isSignUp ? signUpFields : ''}
 
-                        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                        {/* <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                             <Button type="primary" htmlType="submit">
                                 Submit
                             </Button>
-                        </Form.Item>
+                        </Form.Item> */}
 
                     </Form>
                 </>
