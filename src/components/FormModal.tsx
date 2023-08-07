@@ -2,23 +2,52 @@
  * 
  */
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
-    Modal, Button, Menu,
-    DatePicker, Form, Input,
+    Modal, Button, Menu, DatePicker,
+    Form, Input, Select,
 } from 'antd';
-import { 
-    UserOutlined, LoginOutlined, LogoutOutlined, FormOutlined 
+import {
+    LoginOutlined, LogoutOutlined, FormOutlined
 } from "@ant-design/icons";
 import axios from 'axios';
 import { useUserContext } from '../contexts/UserContext';
+import { User } from '../contexts/UserType';
 import { validateSignUp, validateSignIn } from "../utilities/utils"
+
+const { Option } = Select;
+
+const formItemLayout = {
+    labelCol: {
+        xs: { span: 24 },
+        sm: { span: 8 },
+    },
+    wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 16 },
+    },
+};
+const prefixSelector = (
+    <Form.Item name="prefix" noStyle>
+        <Select style={{ width: 70 }}>
+            <Option value="05">+05</Option>
+            <Option value="02">+02</Option>
+            <Option value="03">+03</Option>
+            <Option value="04">+04</Option>
+            <Option value="07">+07</Option>
+            <Option value="08">+08</Option>
+            <Option value="09">+09</Option>
+            {/* <Option value="1700">+1700</Option> */}
+        </Select>
+    </Form.Item>
+);
 
 
 export default function FormModal() {
 
     const baseUrl = process.env.REACT_APP_SERVER_URL;
 
+    const [form] = Form.useForm();
     const { loggedUser, setLoggedUser } = useUserContext();
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -50,17 +79,20 @@ export default function FormModal() {
 
     async function onFinish(values: any) {
         closeModal();
-        console.log(typeof values , ' Submitting: ', values);
+        if (isSignUp) {
+            values.phone = `${values.prefix}-${values.phone}`;
+            delete values.prefix;
+        }
+        const userDetails = { ...values } as User;
+        console.log(' Submitting: ', userDetails);
         let res;
         try {
             if (isSignUp) {
-                const valid = validateSignUp(values);
-                console.log(valid);
-                res = await axios.post(`${baseUrl}/users/signUp`, values);
+                // const valid = validateSignUp(values);
+                res = await axios.post(`${baseUrl}/users/signUp`, userDetails);
             } else {
-                const valid = validateSignIn(values);
-                console.log(valid);
-                res = await axios.post(`${baseUrl}/users/signIn`, values);
+                // const valid = validateSignIn(values);
+                res = await axios.post(`${baseUrl}/users/signIn`, userDetails);
             }
             console.log('onFinish res.data: ', res.data);
             if (res.data.user._doc) {
@@ -72,11 +104,6 @@ export default function FormModal() {
                 console.log("Error at onFinish: ", error.message);
             console.error(error);
         }
-    };
-
-    const onFinishFailed = (errorInfo: any) => {
-        closeModal();
-        console.log('Failed:', errorInfo);
     };
 
 
@@ -100,29 +127,81 @@ export default function FormModal() {
     const signUpFields =
         <>
             <Form.Item
-                label="PasswordConfirm"
                 name="passwordConfirm"
+                label="Confirm Password"
+                dependencies={['password']}
+                hasFeedback
                 rules={[{
                     required: true,
-                    message: 'Please confirm your password'
-                }]}>
+                    message: 'Please confirm your password',
+                }, {
+                    min: 4,
+                    message: 'Password must be at least 4 characters',
+                },
+                ({ getFieldValue }) => ({
+                    validator(_, value) {
+                        if (!value || getFieldValue('password') === value)
+                            return Promise.resolve();
+                        return Promise.reject(
+                            new Error('The passwords do not match'));
+                    },
+                })]}>
                 <Input.Password />
             </Form.Item>
+
             <Form.Item
-                label="Full Name"
                 name="name"
+                label="Name"
+                tooltip="What do you want others to call you?"
                 rules={[{
                     required: true,
-                    message: 'Please enter your full name'
+                    message: 'Please enter a name',
+                    whitespace: true
+                }, {
+                    min: 3,
+                    message: 'Name must be at least 3 characters',
+                }, {
+                    max: 20,
+                    message: 'Name must be no more than 20 characters',
                 }]}>
                 <Input />
             </Form.Item>
-            <Form.Item name="birthDate" label="Date of Birth">
+
+            <Form.Item
+                name="birthDate"
+                label="Date of Birth"
+                rules={[{
+                    required: true,
+                    message: 'Please select your date of birth'
+                },
+                () => ({
+                    validator(_, value) {
+                        const sixteenYearsAgo = new Date();
+                        sixteenYearsAgo.setFullYear(sixteenYearsAgo.getFullYear() - 16);
+                        if (value < sixteenYearsAgo)
+                            return Promise.resolve();
+                        return Promise.reject(
+                            new Error('Must be at least 16 to register'));
+                    },
+                })]}>
                 <DatePicker />
             </Form.Item>
+
             <Form.Item
-                label="Phone Number" name="phone">
-                <Input />
+                name="phone"
+                label="Phone Number"
+                rules={[
+                    // { required: true, message: 'Please enter a phone number' },
+                    {
+                        min: 4,
+                        message: 'Phone number must be at least 6 digits (including prefix)',
+                    }, {
+                        max: 18,
+                        message: 'Phone number must be no more than 20 digits (including prefix)',
+                    }
+                ]}
+            >
+                <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
             </Form.Item>
         </>
 
@@ -154,56 +233,75 @@ export default function FormModal() {
                     position: "absolute",
                     right: 0
                 }}
-                >
+            >
                 {loggedUser ? logoutButton : loginButtons}
             </Menu.Item>
 
             <Modal title={isSignUp ? "SignUp" : "SignIn"}
                 open={isModalOpen} onCancel={closeModal}
-                footer={[
-                    <Button key="back" onClick={closeModal}>
-                        Return
-                    </Button>
-                ]}>
+            footer={[
+                // <Button key="back" onClick={closeModal}>
+                //     Return
+                // </Button>,
+                // <Button type="primary" htmlType="submit" onClick={onFinish}>
+                //     Submit
+                // </Button>
+            ]}
+            >
 
                 <>
                     <Form
-                        name="basic"
-                        labelCol={{ span: 8 }}
-                        wrapperCol={{ span: 16 }}
-                        style={{ maxWidth: 600 }}
-                        initialValues={{ remember: true }}
+                        {...formItemLayout}
+                        form={form}
+                        name="register"
                         onFinish={onFinish}
-                        onFinishFailed={onFinishFailed}
-                        autoComplete="off">
+                        style={{ maxWidth: 600 }}
+                        scrollToFirstError
+                    >
 
                         <Form.Item
-                            label="Email"
                             name="email"
+                            label="E-mail"
                             rules={[{
+                                type: 'email',
+                                message: 'Please enter a valid E-mail',
+                            }, {
                                 required: true,
-                                message: 'Please enter a valid email'
-                            }]}>
+                                message: 'Please enter an E-mail',
+                            }]}
+                        >
                             <Input />
                         </Form.Item>
 
                         <Form.Item
-                            label="Password"
                             name="password"
+                            label="Password"
                             rules={[{
                                 required: true,
-                                message: 'Please enter a password'
-                            }]}>
+                                message: 'Please enter a password',
+                            }, {
+                                min: 4,
+                                message: 'Password must be at least 4 characters',
+                            }]}
+                            hasFeedback
+                        >
                             <Input.Password />
                         </Form.Item>
 
                         {isSignUp ? signUpFields : ''}
 
                         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                            <Button key="back" onClick={closeModal}>
+                                Return
+                            </Button>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <Button type="primary" htmlType="submit">
                                 Submit
                             </Button>
                         </Form.Item>
+                        {/* <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                        </Form.Item> */}
+
 
                     </Form>
                 </>
