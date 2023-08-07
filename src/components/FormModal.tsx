@@ -244,7 +244,8 @@ export default function FormModal() {
                     <Button type="primary" htmlType="submit">
                         Submit
                     </Button>
-                ]}>
+                ]
+                }>
 
                 <>
                     <Form
@@ -287,6 +288,15 @@ export default function FormModal() {
 
                         {isSignUp ? signUpFields : ''}
 
+<<<<<<< HEAD
+=======
+                        {/* <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                            <Button type="primary" htmlType="submit">
+                                Submit
+                            </Button>
+                        </Form.Item> */}
+
+>>>>>>> 5d0e60347e18b1882013ec0501e770b7a720f585
                     </Form>
                 </>
 
