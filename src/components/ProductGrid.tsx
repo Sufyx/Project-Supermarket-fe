@@ -4,18 +4,16 @@
 
 
 import ProductCard from './ProductCard';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import uuid from 'react-uuid';
-// import {
-//     Col, Divider, Row
-// } from 'antd';
+import { Product } from '../contexts/Types';
 
 
 export default function ProductGrid() {
     const baseUrl = process.env.REACT_APP_SERVER_URL;
 
-    const [productList, setProductList] = useState<any[]>([]);
+    const [productList, setProductList] = useState<Product[]>([]);
 
     useEffect(() => {
         fetchProducts();
@@ -40,7 +38,6 @@ export default function ProductGrid() {
                 {productList.map(product => {
                     return <div className="gridItem" key={uuid()}>
                         <ProductCard product={product} />
-                        {/* <div>{product.name}</div> */}
                     </div>
 
                 })}

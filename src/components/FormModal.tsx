@@ -2,13 +2,13 @@
  * 
  */
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
     Modal, Button, Menu,
     DatePicker, Form, Input,
 } from 'antd';
 import { 
-    UserOutlined, LoginOutlined, LogoutOutlined, FormOutlined 
+    LoginOutlined, LogoutOutlined, FormOutlined 
 } from "@ant-design/icons";
 import axios from 'axios';
 import { useUserContext } from '../contexts/UserContext';
