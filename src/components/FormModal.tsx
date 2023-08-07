@@ -13,7 +13,7 @@ import {
 import axios from 'axios';
 import { useUserContext } from '../contexts/UserContext';
 import { User } from '../contexts/UserType';
-import { validateSignUp, validateSignIn } from "../utilities/utils"
+// import { validateSignUp, validateSignIn } from "../utilities/utils"
 
 const { Option } = Select;
 
@@ -52,7 +52,6 @@ export default function FormModal() {
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [isSignUp, setIsSignUp] = useState<boolean>(false);
-    // const [autoCompleteResult, setAutoCompleteResult] = useState<string[]>([]);
 
 
     useEffect(() => {
@@ -82,17 +81,15 @@ export default function FormModal() {
         closeModal();
         values.phone = `${values.prefix}-${values.phone}`;
         delete values.prefix;
-        const userDetails = {...values} as User;
+        const userDetails = { ...values } as User;
         console.log(' Submitting: ', userDetails);
         let res;
         try {
             if (isSignUp) {
                 // const valid = validateSignUp(values);
-                // console.log(valid);
                 res = await axios.post(`${baseUrl}/users/signUp`, userDetails);
             } else {
                 // const valid = validateSignIn(values);
-                // console.log(valid);
                 res = await axios.post(`${baseUrl}/users/signIn`, userDetails);
             }
             console.log('onFinish res.data: ', res.data);
@@ -106,11 +103,6 @@ export default function FormModal() {
             console.error(error);
         }
     };
-
-    // const onFinishFailed = (errorInfo: any) => {
-    //     closeModal();
-    //     console.log('Failed:', errorInfo);
-    // };
 
 
     const closeModal = () => {
@@ -140,8 +132,7 @@ export default function FormModal() {
                 rules={[{
                     required: true,
                     message: 'Please confirm your password',
-                },
-                {
+                }, {
                     min: 4,
                     message: 'Password must be at least 4 characters',
                 },
@@ -152,8 +143,7 @@ export default function FormModal() {
                         return Promise.reject(
                             new Error('The passwords do not match'));
                     },
-                })]}
-            >
+                })]}>
                 <Input.Password />
             </Form.Item>
 
@@ -171,8 +161,7 @@ export default function FormModal() {
                 }, {
                     max: 20,
                     message: 'Name must be no more than 20 characters',
-                }]}
-            >
+                }]}>
                 <Input />
             </Form.Item>
 
@@ -192,9 +181,7 @@ export default function FormModal() {
                         return Promise.reject(
                             new Error('Must be at least 16 to register'));
                     },
-                })
-                ]}
-            >
+                })]}>
                 <DatePicker />
             </Form.Item>
 
@@ -206,7 +193,7 @@ export default function FormModal() {
                     {
                         min: 4,
                         message: 'Phone number must be at least 6 digits (including prefix)',
-                    },{
+                    }, {
                         max: 18,
                         message: 'Phone number must be no more than 20 digits (including prefix)',
                     }
@@ -253,6 +240,9 @@ export default function FormModal() {
                 footer={[
                     <Button key="back" onClick={closeModal}>
                         Return
+                    </Button>,
+                    <Button type="primary" htmlType="submit">
+                        Submit
                     </Button>
                 ]}>
 
@@ -262,7 +252,6 @@ export default function FormModal() {
                         form={form}
                         name="register"
                         onFinish={onFinish}
-                        //   initialValues={{  }}
                         style={{ maxWidth: 600 }}
                         scrollToFirstError
                     >
@@ -270,7 +259,6 @@ export default function FormModal() {
                         <Form.Item
                             name="email"
                             label="E-mail"
-                            // initialValues={{ remember: true }}
                             rules={[{
                                 type: 'email',
                                 message: 'Please enter a valid E-mail',
@@ -298,12 +286,6 @@ export default function FormModal() {
                         </Form.Item>
 
                         {isSignUp ? signUpFields : ''}
-
-                        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                            <Button type="primary" htmlType="submit">
-                                Submit
-                            </Button>
-                        </Form.Item>
 
                     </Form>
                 </>
