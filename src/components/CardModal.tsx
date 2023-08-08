@@ -10,6 +10,7 @@ import {
     PlusOutlined, MinusOutlined
 } from "@ant-design/icons";
 import { Product } from '../contexts/Types';
+import { useProductContext } from '../contexts/ProductContext';
 
 
 
@@ -20,15 +21,22 @@ export default function CardModal(
         setModalOpen: React.Dispatch<React.SetStateAction<boolean>>,
     }) {
 
-    // const baseUrl = process.env.REACT_APP_SERVER_URL;
-    // const [modal2Open, setModal2Open] = useState<boolean>(props.modalOpen);
-    // const [productData, setProductData] = useState<Product>();
+    const { productList, setProductList } = useProductContext();
+    // const [localProductList, setLocalProductList] = useState<Product[]>([]);
 
+    useEffect(() => {
+        console.log("*** CardModal rendered : ", productList);
+    }, [productList])
+    
 
-    // useEffect(() => {
-
-    // }, [])
-
+    async function addProduct() {
+        // post request /addProductToCart/:productId
+        props.product.addedByUser++;
+        const productArr = [...productList, props.product];
+        // productArr.push(props.product);
+        setProductList([...productArr]);
+        console.log("localList updated : ", productList);
+    }
 
 
     return (
@@ -63,6 +71,7 @@ export default function CardModal(
                     <Tooltip title="Add">
                         <Button size="large" type="primary" shape="circle"
                             icon={<PlusOutlined />}
+                            onClick={addProduct}
                         />
                     </Tooltip>
                     <Image.PreviewGroup

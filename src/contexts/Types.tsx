@@ -24,7 +24,8 @@ export interface User {
     supplier: string;
     price: number;
     barcode: number;
-    quantity: number;
+    addedByUser: number;
+    stock: number;
     lastUpdate: Date;
     tags: string[];
     categories: string[];

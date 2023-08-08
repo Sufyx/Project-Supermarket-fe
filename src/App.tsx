@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import './App.css';
@@ -11,11 +11,6 @@ import ProductsFilter from './components/ProductsFilter';
 
 
 function App() {
-
-  // useEffect(() => {
-  //   console.log("- - - Mount test - - -");
-  // }, []);
-
 
   return (
     <UserProvider>
