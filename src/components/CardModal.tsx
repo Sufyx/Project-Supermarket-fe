@@ -66,11 +66,7 @@ export default function CardModal(
                         />
                     </Tooltip>
                     <Image.PreviewGroup
-                        items={[
-                            props.product.images[0],
-                            props.product.images[1],
-                            props.product.images[2],
-                        ]}>
+                        items={[...props.product.images]}>
                         <Image
                             width={200}
                             src={props.product.images[0]}
@@ -91,7 +87,7 @@ export default function CardModal(
                         fontSize: 20,
                         fontWeight: '800'
                     }}>
-                        {props.product.price}$
+                        ₪&nbsp;{props.product.price}
                     </p>
                 </div>
                 <Divider />
