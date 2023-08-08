@@ -15,20 +15,16 @@ export default function CardModal(
         modalOpen: boolean,
         setModalOpen: React.Dispatch<React.SetStateAction<boolean>>,
     }) {
-    const baseUrl = process.env.REACT_APP_SERVER_URL;
 
-    const [modal2Open, setModal2Open] = useState<boolean>(props.modalOpen);
-    const [productData, setProductData] = useState<Product>();
+    // const baseUrl = process.env.REACT_APP_SERVER_URL;
+    // const [modal2Open, setModal2Open] = useState<boolean>(props.modalOpen);
+    // const [productData, setProductData] = useState<Product>();
 
 
-    useEffect(() => {
-        setModal2Open(props.modalOpen);
-    }, [props.modalOpen])
+    // useEffect(() => {
+        
+    // }, [])
 
-    function closeModal() {
-        props.setModalOpen(false);
-        setModal2Open(false);
-    }
 
 
     return (
@@ -36,9 +32,9 @@ export default function CardModal(
             <Modal
                 title="Vertically centered modal dialog"
                 centered
-                open={modal2Open}
-                onOk={closeModal}
-                onCancel={closeModal}
+                open={props.modalOpen}
+                onOk={() => props.setModalOpen(false)}
+                onCancel={() => props.setModalOpen(false)}
             >
                 <p>{props.product.name}</p>
                 <p>{props.product.brand}</p>
