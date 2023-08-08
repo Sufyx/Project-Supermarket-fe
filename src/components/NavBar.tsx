@@ -49,24 +49,25 @@ export default function NavBar() {
                 <Header style={{ padding: 0 }}>
                     <Row justify="space-between" align="middle">
 
-                        <Col xs={20} sm={20} md={4}>
+                        <Col xs={20} sm={20} md={2}>
                             <div className="logo"
                                 style={{ color: "white", paddingLeft: "20px" }}>
                                 Logo
                             </div>
                         </Col>
 
-                        <Col xs={0} sm={0} md={20}>
+                        <Col xs={0} sm={0} md={22}>
                             <Menu theme="dark" mode="horizontal"
-                                defaultSelectedKeys={["1"]}>
+                                // defaultSelectedKeys={["1"]}
+                                >
 
-                                <Menu.Item key="home" icon={<HomeOutlined />} >
+                                {/* <Menu.Item key="home" icon={<HomeOutlined />} >
                                     Home
                                 </Menu.Item>
 
                                 <Menu.Item key="profile" icon={<UserOutlined />} >
                                     Profile
-                                </Menu.Item>
+                                </Menu.Item> */}
 
                                 <Menu.Item key="settings" icon={<SettingOutlined />} >
                                     Settings
@@ -78,16 +79,17 @@ export default function NavBar() {
                                         onSearch={onSearch} enterButton />
                                 </Menu.Item>
 
-                                <Menu.Item key="user-name"
+                                <Menu.Item key="user-name" className="userGreet"
                                     style={{
                                         pointerEvents: "none",
-                                        margin: "0 5vw",
+                                        // margin: "auto",
+                                        margin: "0 1vw 0 5vw",
                                         paddingInline: 0,
                                     }}>
                                     {loggedUser ? ("Hi, " + userName) : 'Please sign in / sign up'}
                                 </Menu.Item>
 
-                                <FormModal />
+                                <FormModal isDrawer={false} />
 
                             </Menu>
                         </Col>
@@ -116,7 +118,7 @@ export default function NavBar() {
                                 Settings
                             </Menu.Item>
 
-                            <FormModal />
+                            <FormModal isDrawer={true} />
                             {/* <Menu.Item key="4" >
                                 <Button type="primary"
                                     onClick={() => setSignInClicked((prev) => !prev)}

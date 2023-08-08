@@ -5,15 +5,15 @@
 import { useState, useEffect } from 'react';
 import {
     Modal, Button, Menu, DatePicker,
-    Form, Input, Select,
+    Form, Input, Select, Divider
 } from 'antd';
-import { 
-    LoginOutlined, LogoutOutlined, FormOutlined 
+import {
+    LoginOutlined, LogoutOutlined, FormOutlined
 } from "@ant-design/icons";
 import axios from 'axios';
 import { useUserContext } from '../contexts/UserContext';
-import { User } from '../contexts/UserType';
-import { validateSignUp, validateSignIn } from "../utilities/utils"
+import { User } from '../contexts/Types';
+// import { validateSignUp, validateSignIn } from "../utilities/utils";
 
 const { Option } = Select;
 
@@ -43,7 +43,7 @@ const prefixSelector = (
 );
 
 
-export default function FormModal() {
+export default function FormModal(props: { isDrawer: boolean }) {
 
     const baseUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -212,7 +212,8 @@ export default function FormModal() {
                 style={{ marginRight: "10px" }}>
                 <LoginOutlined /> Sign in
             </Button>
-            <Button onClick={signUpClick} >
+            {/* {props.isDrawer ? <br /> : ''} */}
+            <Button onClick={signUpClick} type="primary" >
                 <FormOutlined /> Sign Up
             </Button>
         </>
@@ -231,25 +232,34 @@ export default function FormModal() {
                 style={{
                     paddingInline: 5,
                     position: "absolute",
-                    right: 0
+                    right: props.isDrawer ? -10 : 10
                 }}
             >
                 {loggedUser ? logoutButton : loginButtons}
             </Menu.Item>
 
-            <Modal title={isSignUp ? "SignUp" : "SignIn"}
+            <Modal 
+                // title={isSignUp ? "SignUp" : "SignIn"}
                 open={isModalOpen} onCancel={closeModal}
-            footer={[
-                // <Button key="back" onClick={closeModal}>
-                //     Return
-                // </Button>,
-                // <Button type="primary" htmlType="submit" onClick={onFinish}>
-                //     Submit
-                // </Button>
-            ]}
+                style={{fontFamily: "'Lora', serif",}}
+                footer={[
+                    // <Button key="back" onClick={closeModal}>
+                    //     Return
+                    // </Button>,
+                    // <Button type="primary" htmlType="submit" onClick={onFinish}>
+                    //     Submit
+                    // </Button>
+                ]}
             >
 
                 <>
+                    <div style={{
+                        fontSize: 18,
+                        fontWeight: 600
+                    }}>
+                        {isSignUp ? "SignUp" : "SignIn"}
+                    </div>
+                    <Divider />
                     <Form
                         {...formItemLayout}
                         form={form}
@@ -258,7 +268,6 @@ export default function FormModal() {
                         style={{ maxWidth: 600 }}
                         scrollToFirstError
                     >
-
                         <Form.Item
                             name="email"
                             label="E-mail"
