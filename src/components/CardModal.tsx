@@ -5,7 +5,7 @@
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Button, Modal } from 'antd';
+import { Button, Modal, Image } from 'antd';
 import { Product } from '../contexts/Types';
 
 
@@ -22,7 +22,7 @@ export default function CardModal(
 
 
     // useEffect(() => {
-        
+
     // }, [])
 
 
@@ -30,13 +30,26 @@ export default function CardModal(
     return (
         <div>
             <Modal
-                title="Vertically centered modal dialog"
+                title={props.product.name}
                 centered
                 open={props.modalOpen}
-                onOk={() => props.setModalOpen(false)}
-                onCancel={() => props.setModalOpen(false)}
+                footer={[
+                    <Button key="back" onClick={() => props.setModalOpen(false)}>
+                        Close
+                    </Button>
+                ]}
             >
-                <p>{props.product.name}</p>
+                <Image.PreviewGroup
+                    items={[
+                        props.product.images[0],
+                        props.product.images[1],
+                        props.product.images[2],
+                    ]}>
+                    <Image
+                        width={200}
+                        src={props.product.images[0]}
+                    />
+                </Image.PreviewGroup>
                 <p>{props.product.brand}</p>
                 <p>{props.product.description}</p>
                 <p>{props.product.price}$</p>
