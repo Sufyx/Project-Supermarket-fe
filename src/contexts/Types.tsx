@@ -16,4 +16,18 @@ export interface User {
     creditCards: string[];
     // token: string;
   }
+
+  export interface Product {
+    name: string;
+    brand: string;
+    description: string;
+    supplier: string;
+    price: number;
+    barcode: number;
+    quantity: number;
+    lastUpdate: Date;
+    tags: string[];
+    categories: string[];
+    images: string[];
+  }
   

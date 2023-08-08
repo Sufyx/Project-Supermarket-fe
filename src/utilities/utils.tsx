@@ -4,7 +4,7 @@
 
 
 import * as EmailValidator from 'email-validator';
-import { User } from '../contexts/UserType';
+import { User } from '../contexts/Types';
 
 
 export function validateSignUp(formData: User): string {

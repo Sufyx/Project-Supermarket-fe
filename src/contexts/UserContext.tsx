@@ -3,7 +3,7 @@
  */
 
 import React, { createContext, useContext, useState } from 'react';
-import { User } from './UserType';
+import { User } from './Types';
 
 interface UserContextValue {
     loggedUser: User | null;
