@@ -5,8 +5,12 @@
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Button, Modal, Image } from 'antd';
+import { Button, Modal, Image, Divider, Tooltip } from 'antd';
+import {
+    PlusOutlined, MinusOutlined
+} from "@ant-design/icons";
 import { Product } from '../contexts/Types';
+
 
 
 export default function CardModal(
@@ -30,30 +34,74 @@ export default function CardModal(
     return (
         <div>
             <Modal
-                title={props.product.name}
+                className='cardModal'
                 centered
                 open={props.modalOpen}
+                onCancel={() => props.setModalOpen(false)}
+                style={{
+                    fontFamily: "'Lora', serif",
+                    background: "#838db3"
+                }}
                 footer={[
                     <Button key="back" onClick={() => props.setModalOpen(false)}>
                         Close
                     </Button>
-                ]}
-            >
-                <Image.PreviewGroup
-                    items={[
-                        props.product.images[0],
-                        props.product.images[1],
-                        props.product.images[2],
-                    ]}>
-                    <Image
-                        width={200}
-                        src={props.product.images[0]}
-                    />
-                </Image.PreviewGroup>
-                <p>{props.product.brand}</p>
-                <p>{props.product.description}</p>
-                <p>{props.product.price}$</p>
-                <p>{(props.product.tags).join(" , ")}</p>
+                ]}>
+                <p style={{
+                    fontSize: 20,
+                    fontWeight: '800'
+                }}>
+                    {props.product.name}
+                </p>
+                <Divider />
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    // fontSize: 60
+                }}>
+                    <Tooltip title="Add">
+                        <Button size="large" type="primary" shape="circle"
+                            icon={<PlusOutlined />}
+                        />
+                    </Tooltip>
+                    <Image.PreviewGroup
+                        items={[
+                            props.product.images[0],
+                            props.product.images[1],
+                            props.product.images[2],
+                        ]}>
+                        <Image
+                            width={200}
+                            src={props.product.images[0]}
+                        />
+                    </Image.PreviewGroup>
+                    <Tooltip title="Remove">
+                        <Button size="large" type="primary" shape="circle"
+                            icon={<MinusOutlined />} />
+                    </Tooltip>
+                </div>
+                <Divider />
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                }}>
+                    <p>By {props.product.brand}</p>
+                    <p style={{
+                        fontSize: 20,
+                        fontWeight: '800'
+                    }}>
+                        {props.product.price}$
+                    </p>
+                </div>
+                <Divider />
+                <p style={{
+                    fontSize: 15,
+                    fontWeight: '600'
+                }}>
+                    {props.product.description}
+                </p>
+                <Divider />
             </Modal>
         </div>
     )
