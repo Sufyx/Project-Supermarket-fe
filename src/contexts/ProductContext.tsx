@@ -1,20 +1,18 @@
-/**
- * 
- */
+// Redundant for now. Functionality moved to UserContext.
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { Product } from './Types';
 
 interface ProductContextValue {
+    addedProduct: Product | null;
+    setAddedProduct: (addedProduct: Product | null) => void;
     // productList: Product[];
-    // setProductList: (productList: Product[]) => void;
-    productList: Product[];
-    setProductList: React.Dispatch<React.SetStateAction<Product[]>>;
+    // setProductList: React.Dispatch<React.SetStateAction<Product[]>>;
 }
 
 const ProductContext = createContext<ProductContextValue>({
-    productList: [],
-    setProductList: () => { },
+    addedProduct: null,
+    setAddedProduct: () => { },
 });
 
 export function useProductContext() {
@@ -28,15 +26,10 @@ interface ProductProviderProps {
 
 export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) => {
 
-    const [productList, setProductList] = useState<Product[]>([]);
-
-    // useEffect(() => {
-    //   // get cart from user db
-    // }, [])
-    
+    const [addedProduct, setAddedProduct] = useState<Product | null>(null);
 
     return (
-        <ProductContext.Provider value={{ productList, setProductList }}>
+        <ProductContext.Provider value={{ addedProduct, setAddedProduct }}>
             {children}
         </ProductContext.Provider>
     );
