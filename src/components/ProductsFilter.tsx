@@ -10,7 +10,7 @@ import axios from 'axios';
 export default function ProductsFilter() {
   return (
     <div className="filterContainer">
-        ProductsFilter
+        Products Filter / Categories
     </div>
   )
 }

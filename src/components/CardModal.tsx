@@ -4,12 +4,14 @@
 
 
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Button, Modal, Image, Divider, Tooltip } from 'antd';
 import {
     PlusOutlined, MinusOutlined
 } from "@ant-design/icons";
 import { Product } from '../contexts/Types';
+import { useProductContext } from '../contexts/ProductContext';
+import { useUserContext } from '../contexts/UserContext';
+
 
 
 
@@ -19,16 +21,24 @@ export default function CardModal(
         modalOpen: boolean,
         setModalOpen: React.Dispatch<React.SetStateAction<boolean>>,
     }) {
+    const fallbackImage = "https://media.istockphoto.com/id/1271880340/vector/lost-items-line-vector-icon-unidentified-items-outline-isolated-icon.jpg?s=612x612&w=0&k=20&c=d2kHGEmowThp_UrqIPfhxibstH6Sq5yDZJ41NetzVaA=";
 
-    // const baseUrl = process.env.REACT_APP_SERVER_URL;
-    // const [modal2Open, setModal2Open] = useState<boolean>(props.modalOpen);
-    // const [productData, setProductData] = useState<Product>();
-
+    const { setAddedProduct } = useProductContext();
+    const { loggedUser } = useUserContext();
 
     // useEffect(() => {
+    //     console.log("*** CardModal rendered : ", addedProduct);
+    // }, [addedProduct])
 
-    // }, [])
 
+    async function addProduct() {
+        if (!loggedUser) {
+
+            return;
+        }
+        const toAdd = { ...props.product };
+        setAddedProduct(toAdd);
+    }
 
 
     return (
@@ -62,18 +72,23 @@ export default function CardModal(
                 }}>
                     <Tooltip title="Add">
                         <Button size="large" type="primary" shape="circle"
+                            disabled={!loggedUser}
                             icon={<PlusOutlined />}
+                            onClick={addProduct}
                         />
                     </Tooltip>
                     <Image.PreviewGroup
-                        items={[...props.product.images]}>
+                        items={props.product.images[0] ?
+                            [...props.product.images] : [fallbackImage]}>
                         <Image
                             width={200}
-                            src={props.product.images[0]}
+                            src={props.product.images[0] ?
+                                props.product.images[0] : fallbackImage}
                         />
                     </Image.PreviewGroup>
                     <Tooltip title="Remove">
                         <Button size="large" type="primary" shape="circle"
+                            disabled={!loggedUser}
                             icon={<MinusOutlined />} />
                     </Tooltip>
                 </div>

@@ -11,6 +11,8 @@ const { Meta } = Card;
 
 export default function ProductCard(props: { product: Product }) {
 
+    const fallbackImage = "https://media.istockphoto.com/id/1271880340/vector/lost-items-line-vector-icon-unidentified-items-outline-isolated-icon.jpg?s=612x612&w=0&k=20&c=d2kHGEmowThp_UrqIPfhxibstH6Sq5yDZJ41NetzVaA=";
+
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const [imageError, setImageError] = useState<boolean>(false);
 
@@ -30,18 +32,17 @@ export default function ProductCard(props: { product: Product }) {
                 hoverable
                 // className="productCard"
                 cover={
-                        <img 
-                            alt={props.product.name}
-                            onError={() => setImageError(true)}
-                            style={{
-                                height: "130px",
-                                width: "auto",
-                                aspectRatio: "1/1"
-                            }}
-                            src={ props.product.images[0] ?
-                                props.product.images[0] :
-                                "https://media.istockphoto.com/id/1271880340/vector/lost-items-line-vector-icon-unidentified-items-outline-isolated-icon.jpg?s=612x612&w=0&k=20&c=d2kHGEmowThp_UrqIPfhxibstH6Sq5yDZJ41NetzVaA="}
-                        /> 
+                    <img
+                        alt={props.product.name}
+                        onError={() => setImageError(true)}
+                        style={{
+                            height: "130px",
+                            width: "auto",
+                            aspectRatio: "1/1"
+                        }}
+                        src={props.product.images[0] ?
+                            props.product.images[0] : fallbackImage}
+                    />
                 }
             >
                 <Meta
@@ -50,7 +51,6 @@ export default function ProductCard(props: { product: Product }) {
                     }}
                     title={props.product.name}
                     description={props.product.brand}
-                // description={props.product.description} 
                 />
             </Card>
             <CardModal product={props.product}

@@ -21,15 +21,18 @@
 .filterContainer {
   height: 80vh;
   width: 20vw;
-  margin: 0 auto;
-  border: 3px solid rgb(11, 87, 39);
+  margin: 0 1% 0 5%;
+  border: 2px ridge rgb(58, 124, 168);
+  padding: 3px;
 }
 
 .cartContainer {
+  overflow-y: scroll;
   margin: 0 1%;
   height: 80vh;
-  width: 20vw;
-  border: 3px solid rgb(65, 14, 94)
+  width: 25vw;
+  border: 6px ridge #b7cad1;
+  border-radius: 10px;
 }
 
 .productGrid {
@@ -49,6 +52,13 @@
 :where(.css-dev-only-do-not-override-1sn0ohr).ant-card .ant-card-meta-title {
   white-space: normal;
   height: 50px;
+}
+
+:where(.css-dev-only-do-not-override-1sn0ohr).ant-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 }
 
 :where(.css-dev-only-do-not-override-1sn0ohr).ant-modal .ant-modal-content {
