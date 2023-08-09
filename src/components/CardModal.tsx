@@ -4,14 +4,13 @@
 
 
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Button, Modal, Image, Divider, Tooltip } from 'antd';
 import {
     PlusOutlined, MinusOutlined
 } from "@ant-design/icons";
 import { Product } from '../contexts/Types';
 import { useProductContext } from '../contexts/ProductContext';
-// import { useUserContext } from '../contexts/UserContext';
+import { useUserContext } from '../contexts/UserContext';
 
 
 
@@ -25,6 +24,7 @@ export default function CardModal(
     const fallbackImage = "https://media.istockphoto.com/id/1271880340/vector/lost-items-line-vector-icon-unidentified-items-outline-isolated-icon.jpg?s=612x612&w=0&k=20&c=d2kHGEmowThp_UrqIPfhxibstH6Sq5yDZJ41NetzVaA=";
 
     const { setAddedProduct } = useProductContext();
+    const { loggedUser } = useUserContext();
 
     // useEffect(() => {
     //     console.log("*** CardModal rendered : ", addedProduct);
@@ -32,7 +32,10 @@ export default function CardModal(
 
 
     async function addProduct() {
-        // post request /addProductToCart/:productId
+        if (!loggedUser) {
+
+            return;
+        }
         const toAdd = { ...props.product };
         setAddedProduct(toAdd);
     }
@@ -69,6 +72,7 @@ export default function CardModal(
                 }}>
                     <Tooltip title="Add">
                         <Button size="large" type="primary" shape="circle"
+                            disabled={!loggedUser}
                             icon={<PlusOutlined />}
                             onClick={addProduct}
                         />
@@ -84,6 +88,7 @@ export default function CardModal(
                     </Image.PreviewGroup>
                     <Tooltip title="Remove">
                         <Button size="large" type="primary" shape="circle"
+                            disabled={!loggedUser}
                             icon={<MinusOutlined />} />
                     </Tooltip>
                 </div>

@@ -22,7 +22,8 @@
   height: 80vh;
   width: 20vw;
   margin: 0 1% 0 5%;
-  border: 3px solid rgb(11, 87, 39);
+  border: 2px ridge rgb(58, 124, 168);
+  padding: 3px;
 }
 
 .cartContainer {

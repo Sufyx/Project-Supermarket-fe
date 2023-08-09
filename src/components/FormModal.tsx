@@ -62,7 +62,7 @@ export default function FormModal(props: { isDrawer: boolean }) {
 
     async function reLogUser() {
         try {
-            const token = localStorage.getItem('loggedUser')
+            const token = localStorage.getItem('loggedUser');
             if (token) {
                 const res = await axios.get(`${baseUrl}/users/logged`,
                     { headers: { authorization: `Bearer ${token}` } });
