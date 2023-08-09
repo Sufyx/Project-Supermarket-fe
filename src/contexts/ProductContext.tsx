@@ -1,4 +1,6 @@
-// Redundant for now. Functionality moved to UserContext.
+/**
+ * 
+ */
 
 import React, { createContext, useContext, useState } from 'react';
 import { Product } from './Types';

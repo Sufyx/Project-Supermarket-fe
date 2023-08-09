@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /**
  * 
  */
@@ -5,8 +6,8 @@
 import { useState, useEffect } from 'react';
 import { Avatar, List } from 'antd';
 import { Product } from '../contexts/Types';
-// import { useProductContext } from '../contexts/ProductContext';
-import { useUserContext } from '../contexts/UserContext';
+import { useProductContext } from '../contexts/ProductContext';
+// import { useUserContext } from '../contexts/UserContext';
 
 
 
@@ -21,17 +22,21 @@ export default function ShoppingCart() {
     images: string[];
   }
 
-  const { addedProduct } = useUserContext();
-  // const { addedProduct } = useProductContext();
 
-  // const [cart, setCart] = useState<{ [itemId: string]: CartItem }>({});
+  const { addedProduct } = useProductContext();
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [totalPrice, setTotalPrice] = useState<number>(0);
+
 
   useEffect(() => {
-    // console.log("cart updated: ", addedProduct);
     if (addedProduct)
       addToCart(addedProduct);
-  }, [addedProduct])
+      updateTotalCost();
+  }, [addedProduct]);
+
+  // useEffect(() => {
+  //   updateTotalCost();
+  // }, [cart]);
 
 
   function addToCart(product: Product) {
@@ -56,6 +61,12 @@ export default function ShoppingCart() {
     setCart([...updatedCart]);
   }
 
+  function updateTotalCost() {
+    let total = 0;
+    cart.forEach(item => total += (item.price));
+    setTotalPrice(Number(total.toFixed(2)));
+  }
+
 
   return (
     <div className="cartContainer">
@@ -64,7 +75,16 @@ export default function ShoppingCart() {
         // bordered
         dataSource={cart}
         footer={
-          <div>Total:</div>
+          <div style={{
+            margin: "0 10%",
+            fontSize: 20,
+            fontWeight: 600,
+            color: "rgb(11, 97, 89)",
+            textShadow: "0 0 1.5px red",
+            textDecoration: "underline"
+          }}>
+            Total: {totalPrice}
+          </div>
         }
         renderItem={(item, index) => (
           <List.Item
@@ -88,7 +108,7 @@ export default function ShoppingCart() {
               title={item.name}
               description={`Amount: ${item.addedByUser} 
                 | Price: ${item.price} 
-                |Total: ${(item.addedByUser * item.price).toFixed(2)}`}
+                | Total: ${(item.addedByUser * item.price).toFixed(2)}`}
             />
 
             {/* <div style={{marginRight: 10}}>
