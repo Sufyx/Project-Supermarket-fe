@@ -39,7 +39,6 @@ export default function ProductGrid() {
                     return <div className="gridItem" key={uuid()}>
                         <ProductCard product={product} />
                     </div>
-
                 })}
             </div>
         </div>

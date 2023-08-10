@@ -52,12 +52,17 @@ export default function FormModal(props: { isDrawer: boolean }) {
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [isSignUp, setIsSignUp] = useState<boolean>(false);
+    const [serverErrorMessage, setServerErrorMessage] = useState<string>("");
 
 
     useEffect(() => {
         reLogUser()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        setServerErrorMessage("");
+    }, [isModalOpen]);
 
 
     async function reLogUser() {
@@ -69,7 +74,7 @@ export default function FormModal(props: { isDrawer: boolean }) {
                 setLoggedUser(res.data.user._doc);
             }
         } catch (error) {
-            if (error instanceof Error)
+            if (error instanceof Error) 
                 console.log("Error at reLogUser: ", error.message);
             console.error(error);
         }
@@ -77,7 +82,7 @@ export default function FormModal(props: { isDrawer: boolean }) {
 
 
     async function onFinish(values: any) {
-        closeModal();
+        setServerErrorMessage("");
         if (isSignUp) {
             values.phone = `${values.prefix}-${values.phone}`;
             delete values.prefix;
@@ -85,20 +90,20 @@ export default function FormModal(props: { isDrawer: boolean }) {
         const userDetails = { ...values } as User;
         let res;
         try {
-            if (isSignUp) {
-                // const valid = validateSignUp(values);
+            if (isSignUp)
                 res = await axios.post(`${baseUrl}/users/signUp`, userDetails);
-            } else {
-                // const valid = validateSignIn(values);
+            else
                 res = await axios.post(`${baseUrl}/users/signIn`, userDetails);
-            }
+            
+
             if (res.data.user._doc) {
                 setLoggedUser(res.data.user._doc);
                 localStorage.setItem('loggedUser', res.data.token);
             }
-        } catch (error) {
-            if (error instanceof Error)
-                console.log("Error at onFinish: ", error.message);
+            closeModal();
+        } catch (error: any) {
+                console.log("Error at onFinish: ", error);
+                setServerErrorMessage(error.response.data);
             console.error(error);
         }
     };
@@ -295,6 +300,14 @@ export default function FormModal(props: { isDrawer: boolean }) {
                         </Form.Item>
 
                         {isSignUp ? signUpFields : ''}
+
+                        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                            <p style ={{
+                                color: "red"
+                            }}>
+                                {serverErrorMessage}
+                            </p>
+                        </Form.Item>
 
                         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                             <Button key="back" onClick={closeModal}>
