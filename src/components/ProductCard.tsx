@@ -16,10 +16,6 @@ export default function ProductCard(props: { product: Product }) {
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const [imageError, setImageError] = useState<boolean>(false);
 
-    // function cardClick() {
-    //     console.log("Product: ", props.product);
-    // }
-
 
     return (
         <div className="productCard">

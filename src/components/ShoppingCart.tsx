@@ -6,7 +6,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Divider, List } from 'antd';
-import { Product } from '../contexts/Types';
+import { ChosenProduct } from '../contexts/Types';
 import { useProductContext } from '../contexts/ProductContext';
 import { useUserContext } from '../contexts/UserContext';
 
@@ -22,7 +22,7 @@ export default function ShoppingCart() {
     name: string;
     price: number;
     barcode: number;
-    addedByUser: number;
+    amountInCart: number;
     images: string[];
   }
 
@@ -55,7 +55,7 @@ export default function ShoppingCart() {
     const items = [...res.data.cart];
     let total = 0;
     items.forEach((item, i) => {
-      item["addedByUser"] = loggedUser.cart[i].productAmount;
+      item["amountInCart"] = loggedUser.cart[i].productAmount;
       total += (item.price * Number(loggedUser.cart[i].productAmount));
     });
     setTotalPrice(total);
@@ -63,32 +63,36 @@ export default function ShoppingCart() {
   }
 
 
-  async function addToCart(product: Product) {
-    if (!product.addedByUser)
-      product["addedByUser"] = 1;
+  async function addToCart(product: ChosenProduct) {
+    if (!product.amountInCart)
+      product["amountInCart"] = 1;
 
     const cartItem: CartItem = {
       _id: product._id,
       name: product.name,
       price: product.price,
       barcode: product.barcode,
-      addedByUser: product.addedByUser,
+      amountInCart: product.amountInCart,
       images: [...product.images],
     }
 
     const updatedCart = [...cart];
     const index = cart.findIndex((item) => item._id === cartItem._id);
-    if (index === -1)
+    if (index === -1) {
+      if (product.addOrReduce === -1) return;
       updatedCart.push(cartItem)
+    }
     else
-      updatedCart[index].addedByUser++;
-    const amount = ((index === -1) ? 1 : updatedCart[index].addedByUser);
+      updatedCart[index].amountInCart = Number(updatedCart[index].amountInCart) + product.addOrReduce;
 
+    const amount = ((index === -1) ? 1 : updatedCart[index].amountInCart);
+    if (amount <= 0) 
+      updatedCart.splice(index, 1);
+    
     const token = localStorage.getItem('loggedUser');
-    const res = await axios.post(`${baseUrl}/users/addProductToCart?productId=${cartItem._id}&productAmount=${amount}`,
+    await axios.post(`${baseUrl}/users/addProductToCart?productId=${cartItem._id}&productAmount=${amount}`,
       null,
       { headers: { Authorization: `Bearer ${token}` } });
-    // console.log("addToCart res.data: ", res.data);
 
     setCart([...updatedCart]);
     setTotalPrice(prevTotal => Number((prevTotal + cartItem.price).toFixed(2)));
@@ -132,16 +136,12 @@ export default function ShoppingCart() {
               style={{
                 padding: "0 5px"
               }}
-              // avatar={<Avatar src={item.images[0]} />}
               title={item.name}
-              description={`Amount: ${item.addedByUser} 
+              description={`Amount: ${item.amountInCart} 
                 | Price: ${item.price} 
-                | Total: ${(item.addedByUser * item.price).toFixed(2)}`}
+                | Total: ${(item.amountInCart * item.price).toFixed(2)}`}
             />
 
-            {/* <div style={{marginRight: 10}}>
-                {item.addedByUser}
-              </div> */}
           </List.Item>
         )}
       />

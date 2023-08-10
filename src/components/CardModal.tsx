@@ -8,7 +8,7 @@ import { Button, Modal, Image, Divider, Tooltip } from 'antd';
 import {
     PlusOutlined, MinusOutlined
 } from "@ant-design/icons";
-import { Product } from '../contexts/Types';
+import { Product, ChosenProduct } from '../contexts/Types';
 import { useProductContext } from '../contexts/ProductContext';
 import { useUserContext } from '../contexts/UserContext';
 
@@ -31,12 +31,9 @@ export default function CardModal(
     // }, [addedProduct])
 
 
-    async function addProduct() {
-        if (!loggedUser) {
-
-            return;
-        }
-        const toAdd = { ...props.product };
+    async function addProduct(addOrReduce: number) {
+        if (!loggedUser) return; 
+        const toAdd = { ...props.product, addOrReduce: addOrReduce };
         setAddedProduct(toAdd);
     }
 
@@ -74,7 +71,7 @@ export default function CardModal(
                         <Button size="large" type="primary" shape="circle"
                             disabled={!loggedUser}
                             icon={<PlusOutlined />}
-                            onClick={addProduct}
+                            onClick={() => addProduct(1)}
                         />
                     </Tooltip>
                     <Image.PreviewGroup
@@ -89,6 +86,7 @@ export default function CardModal(
                     <Tooltip title="Remove">
                         <Button size="large" type="primary" shape="circle"
                             disabled={!loggedUser}
+                            onClick={() => addProduct(-1)}
                             icon={<MinusOutlined />} />
                     </Tooltip>
                 </div>
