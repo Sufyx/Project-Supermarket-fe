@@ -66,7 +66,6 @@ export default function FormModal(props: { isDrawer: boolean }) {
             if (token) {
                 const res = await axios.get(`${baseUrl}/users/logged`,
                     { headers: { authorization: `Bearer ${token}` } });
-                console.log("res = ", res.data.user._doc);
                 setLoggedUser(res.data.user._doc);
             }
         } catch (error) {
@@ -84,7 +83,6 @@ export default function FormModal(props: { isDrawer: boolean }) {
             delete values.prefix;
         }
         const userDetails = { ...values } as User;
-        console.log(' Submitting: ', userDetails);
         let res;
         try {
             if (isSignUp) {
@@ -94,7 +92,6 @@ export default function FormModal(props: { isDrawer: boolean }) {
                 // const valid = validateSignIn(values);
                 res = await axios.post(`${baseUrl}/users/signIn`, userDetails);
             }
-            console.log('onFinish res.data: ', res.data);
             if (res.data.user._doc) {
                 setLoggedUser(res.data.user._doc);
                 localStorage.setItem('loggedUser', res.data.token);

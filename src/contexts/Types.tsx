@@ -28,10 +28,14 @@ export interface Product {
   supplier: string;
   price: number;
   barcode: number;
-  addedByUser: number;
+  amountInCart: number;
   stock: number;
   lastUpdate: Date;
   tags: string[];
   categories: string[];
   images: string[];
+}
+
+export interface ChosenProduct extends Product {
+  addOrReduce: number;
 }

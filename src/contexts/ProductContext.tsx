@@ -3,11 +3,11 @@
  */
 
 import React, { createContext, useContext, useState } from 'react';
-import { Product } from './Types';
+import { ChosenProduct } from './Types';
 
 interface ProductContextValue {
-    addedProduct: Product | null;
-    setAddedProduct: (addedProduct: Product | null) => void;
+    addedProduct: ChosenProduct | null;
+    setAddedProduct: (addedProduct: ChosenProduct | null) => void;
     // productList: Product[];
     // setProductList: React.Dispatch<React.SetStateAction<Product[]>>;
 }
@@ -28,7 +28,7 @@ interface ProductProviderProps {
 
 export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) => {
 
-    const [addedProduct, setAddedProduct] = useState<Product | null>(null);
+    const [addedProduct, setAddedProduct] = useState<ChosenProduct | null>(null);
 
     return (
         <ProductContext.Provider value={{ addedProduct, setAddedProduct }}>
