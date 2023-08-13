@@ -67,7 +67,7 @@ export default function CardModal(
                     alignItems: 'center',
                     // fontSize: 60
                 }}>
-                    <Tooltip title="Add">
+                    <Tooltip title={loggedUser ? "Add" : "Please log-in"}>
                         <Button size="large" type="primary" shape="circle"
                             disabled={!loggedUser}
                             icon={<PlusOutlined />}
@@ -83,7 +83,7 @@ export default function CardModal(
                                 props.product.images[0] : fallbackImage}
                         />
                     </Image.PreviewGroup>
-                    <Tooltip title="Remove">
+                    <Tooltip title={loggedUser ? "Remove" : "Please log-in"}>
                         <Button size="large" type="primary" shape="circle"
                             disabled={!loggedUser}
                             onClick={() => addProduct(-1)}
