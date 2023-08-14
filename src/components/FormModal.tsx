@@ -2,6 +2,7 @@
  * 
  */
 
+
 import { useState, useEffect } from 'react';
 import {
     Modal, Button, Menu, DatePicker,
@@ -13,7 +14,6 @@ import {
 import axios from 'axios';
 import { useUserContext } from '../contexts/UserContext';
 import { User } from '../contexts/Types';
-// import { validateSignUp, validateSignIn } from "../utilities/utils";
 
 const { Option } = Select;
 
@@ -84,7 +84,7 @@ export default function FormModal(props: { isDrawer: boolean }) {
     async function onFinish(values: any) {
         setServerErrorMessage("");
         if (isSignUp) {
-            values.phone = `${values.prefix}-${values.phone}`;
+            values.phone = (values.prefix ? `${values.prefix}-` : "") + values.phone;
             delete values.prefix;
         }
         const userDetails = { ...values } as User;
@@ -130,7 +130,7 @@ export default function FormModal(props: { isDrawer: boolean }) {
         <>
             <Form.Item
                 name="passwordConfirm"
-                label="Confirm Password"
+                label="Confirm"
                 dependencies={['password']}
                 hasFeedback
                 rules={[{
@@ -193,7 +193,6 @@ export default function FormModal(props: { isDrawer: boolean }) {
                 name="phone"
                 label="Phone Number"
                 rules={[
-                    // { required: true, message: 'Please enter a phone number' },
                     {
                         min: 4,
                         message: 'Phone number must be at least 6 digits (including prefix)',
@@ -212,7 +211,7 @@ export default function FormModal(props: { isDrawer: boolean }) {
             <Button type="primary"
                 onClick={signInClick}
                 style={{ marginRight: "10px" }}>
-                <LoginOutlined /> Sign in
+                <LoginOutlined /> Sign In
             </Button>
             {/* {props.isDrawer ? <br /> : ''} */}
             <Button onClick={signUpClick} type="primary" >
@@ -241,17 +240,9 @@ export default function FormModal(props: { isDrawer: boolean }) {
             </Menu.Item>
 
             <Modal 
-                // title={isSignUp ? "SignUp" : "SignIn"}
                 open={isModalOpen} onCancel={closeModal}
                 style={{fontFamily: "'Lora', serif",}}
-                footer={[
-                    // <Button key="back" onClick={closeModal}>
-                    //     Return
-                    // </Button>,
-                    // <Button type="primary" htmlType="submit" onClick={onFinish}>
-                    //     Submit
-                    // </Button>
-                ]}
+                footer={[]}
             >
 
                 <>
@@ -272,13 +263,16 @@ export default function FormModal(props: { isDrawer: boolean }) {
                     >
                         <Form.Item
                             name="email"
-                            label="E-mail"
+                            label="Email"
                             rules={[{
                                 type: 'email',
-                                message: 'Please enter a valid E-mail',
+                                message: 'Please enter a valid Email',
                             }, {
                                 required: true,
-                                message: 'Please enter an E-mail',
+                                message: 'Please enter an Email',
+                            } , {
+                                max: 30,
+                                message: 'Email must be 30 characters at most',
                             }]}
                         >
                             <Input />
@@ -293,6 +287,9 @@ export default function FormModal(props: { isDrawer: boolean }) {
                             }, {
                                 min: 4,
                                 message: 'Password must be at least 4 characters',
+                            } , {
+                                max: 30,
+                                message: 'Password must be 30 characters at most',
                             }]}
                             hasFeedback
                         >
@@ -301,26 +298,22 @@ export default function FormModal(props: { isDrawer: boolean }) {
 
                         {isSignUp ? signUpFields : ''}
 
-                        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                            <p style ={{
-                                color: "red"
-                            }}>
+                        <Form.Item 
+                            wrapperCol={{ offset: 8, span: 16 }}>
+                            <p style ={{ color: "red" }}>
                                 {serverErrorMessage}
                             </p>
                         </Form.Item>
 
                         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                            <Button key="back" onClick={closeModal}>
-                                Return
-                            </Button>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <Button type="primary" htmlType="submit">
                                 Submit
                             </Button>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <Button key="back" onClick={closeModal}>
+                                Return
+                            </Button>
                         </Form.Item>
-                        {/* <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                        </Form.Item> */}
-
 
                     </Form>
                 </>
