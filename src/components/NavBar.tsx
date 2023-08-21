@@ -82,7 +82,6 @@ export default function NavBar() {
                                 <Menu.Item key="user-name" className="userGreet"
                                     style={{
                                         pointerEvents: "none",
-                                        // margin: "auto",
                                         margin: "0 1vw 0 5vw",
                                         paddingInline: 0,
                                     }}>

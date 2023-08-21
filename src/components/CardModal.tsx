@@ -65,7 +65,6 @@ export default function CardModal(
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    // fontSize: 60
                 }}>
                     <Tooltip title={loggedUser ? "Add" : "Please log-in"}>
                         <Button size="large" type="primary" shape="circle"
